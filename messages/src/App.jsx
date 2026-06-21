@@ -24,28 +24,49 @@ function App() {
  
 }
 function Acordeon ({data}){
+  const [curOpen , setCurOpen] = useState(0)
   return <div className='acordeon'>
-    {data.map((el, i) => <AcordeonItem title={el.title} text={el.text} num = {i} key={el.title}/>)}
+    {data.map((el, i) => <AcordeonItem 
+                          title={el.title} 
+                          num = {i} 
+                          key={el.title}
+                          curOpen = {curOpen}
+                          onOpen = {setCurOpen}
+                          >{el.text}</AcordeonItem>)}
+    <AcordeonItem
+    curOpen={curOpen}
+    onOpen={setCurOpen}
+    title='Test1'
+    num={22}
+    key= 'test1'
+    ><p>
+    Calculo de las toxinas en Aguas residuales  
+    </p><ul>
+      <li>Make components reusable</li>
+      <li>Break up into components</li>
+      <li>place state eficiently</li>
+    </ul>
+    </AcordeonItem>
     </div>
 }
 
-function AcordeonItem({num,title,text}){  
-const [isOpen,setIsOpen] = useState(Boolean)
+function AcordeonItem({num,title,onOpen , curOpen,children}){  
+const isOpen = num === curOpen;
 
 function handleToggle(){
-  setIsOpen(isOpen => !isOpen)
+  onOpen(isOpen? null:num)
 }
   return <div className={`item ${isOpen  ? 'open': ''}`} onClick={handleToggle}>
     <p className='number'>
       {num < 9? `0${num + 1}`: num + 1}
     </p>
-    <p className='title'>
+    <p className='title'> 
       {title}
     </p>
     <p className='icon'>
       {isOpen? '-':'+'}
     </p>
-    {isOpen && <div className='content-box'>{text}</div>} 
+    {isOpen && <div className='content-box'>{children}</div>} 
   </div>
 }
 export default App
